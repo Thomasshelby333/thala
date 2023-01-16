@@ -373,7 +373,7 @@ def remove_escapes(text: str) -> str:
     return res
 #----------------------------------------------------------
 
-@Altron.on_message(filters.command('rolex') & filters.private)
+@Client.on_message(filters.command('rolex') & filters.private)
 async def start(_, message):
     TEXT = """
 🤖 **Hi I am Rolex !**
