@@ -282,7 +282,7 @@ async def start(client, message):
                         ]
                     )
                 )
-                API_INFO[message.chat.id] = {"API_API":"b6aace46d40c605fff8e0cafbcd8fbe416851f4d", "API_WEB":"tnlink.in"}    
+                API_INFO[message.chat.id] = {"API_API":"b6aace46d40c605fff8e0cafbcd8fbe416851f4d", "API_WEB":"https://tnlink.in/api"}    
 
 
 @Client.on_message(filters.command('shortener') & filters.user(ADMINS))
