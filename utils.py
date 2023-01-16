@@ -2,7 +2,6 @@
 import logging
 from pyrogram.errors import InputUserDeactivated, UserNotParticipant, FloodWait, UserIsBlocked, PeerIdInvalid
 from info import *
-from commands import *
 from imdb import IMDb
 from shortzy import Shortzy
 import asyncio
