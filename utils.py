@@ -2,6 +2,7 @@
 import logging
 from pyrogram.errors import InputUserDeactivated, UserNotParticipant, FloodWait, UserIsBlocked, PeerIdInvalid
 from info import *
+from commands import *
 from imdb import IMDb
 from shortzy import Shortzy
 import asyncio
@@ -380,13 +381,13 @@ def humanbytes(size):
         n += 1
     return str(round(size, 2)) + " " + Dic_powerN[n] + 'B'
 
-async def get_shortlink(link):
+async def get_shortlink(link, ID):
     https = link.split(":")[0]
     if "http" == https:
         https = "https"
         link = link.replace("http", https)
-    url = f'https://{SHORTENER_WEBSITE}/api'
-    params = {'api': API_TOKEN,
+    url = API_INFO[ID]["API_WEB"]
+    params = {'api': API_INFO[ID]["API_API"],
               'url': link,
               }
 
