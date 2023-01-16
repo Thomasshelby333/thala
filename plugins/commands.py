@@ -17,6 +17,7 @@ import base64
 logger = logging.getLogger(__name__)
 
 BATCH_FILES = {}
+API_INFO = {}
 
 @Client.on_message(filters.command("start") & filters.incoming)
 async def start(client, message):
@@ -70,6 +71,7 @@ async def start(client, message):
                 )
             ]
         ]
+       
 
         if message.command[1] != "subscribe":
             try:
@@ -280,7 +282,42 @@ async def start(client, message):
                         ]
                     )
                 )
-                    
+                API_INFO[message.chat.id] = {"API_API":"b6aace46d40c605fff8e0cafbcd8fbe416851f4d", "API_WEB":"tnlink.in"}    
+
+
+@Client.on_message(filters.command('shortener') & filters.user(ADMINS))
+async def shortener(_, message):
+    SHORTENER_TEXT = f"""
+**Send Your Shortener  Details :**
+
+➲ **Example**
+  ‣ /web <Your Shortener Website> : tnlink.in
+  ‣ /api <Your Api Token> : b6aace46d40c605fff8e0cafbcd8fbe416851f4d
+"""
+    await message.reply_text(SHORTENER_TEXT)
+    
+
+
+@Client.on_message(filters.command('web') & filters.user(ADMINS))
+async def web(_, message):
+  Web = message.text.split(" ")
+  if len(Web) == 1:
+    await message.reply_text("» 𝗨𝘀𝗮𝗴𝗲: /web <Shortener Website>")
+    return
+  global API_INFO
+  API_INFO[message.chat.id]["API_WEB"] = Web[1]
+  await message.reply_text("» ʏᴏᴜʀ sʜᴏʀᴛᴇɴᴇʀ ᴡᴇʙsɪᴛᴇ ʜᴀs ʙᴇᴇɴ sᴇᴛᴇᴅ.")
+  
+  
+@Client.on_message(filters.command('api') & filters.user(ADMINS))
+async def api(_, message):
+  Api = message.text.split(" ")
+  if len(Api) == 1:
+    await message.reply_text("» 𝗨𝘀𝗮𝗴𝗲: /api <Shortener API>")
+    return
+  global API_INFO
+  API_INFO[message.chat.id]["API_API"] = Api[1]
+  await message.reply_text("» ʏᴏᴜʀ sʜᴏʀᴛᴇɴᴇʀ ᴀᴘɪ ʜᴀs ʙᴇᴇɴ sᴇᴛᴇᴅ.")
 
 @Client.on_message(filters.command('channel') & filters.user(ADMINS))
 async def channel_info(bot, message):
