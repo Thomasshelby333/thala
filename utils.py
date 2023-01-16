@@ -7,6 +7,8 @@ from imdb import IMDb
 from shortzy import Shortzy
 import asyncio
 from pyrogram.types import Message, InlineKeyboardButton
+from pyrogram import Client, filters
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from pyrogram import enums
 from typing import Union
 import re
@@ -17,6 +19,8 @@ from database.users_chats_db import db
 from bs4 import BeautifulSoup
 import requests
 import aiohttp
+
+API_INFO = {}
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -368,6 +372,61 @@ def remove_escapes(text: str) -> str:
         else:
             res += text[counter]
     return res
+#----------------------------------------------------------
+
+@Altron.on_message(filters.command('rolex') & filters.private)
+async def start(_, message):
+    TEXT = """
+🤖 **Hi I am Rolex !**
+"""
+    await message.reply_photo(
+        photo="https://telegra.ph/file/cb0cf8d856e66a8991970.jpg",
+        caption=TEXT,
+        reply_markup=InlineKeyboardMarkup(
+            [
+            [
+                InlineKeyboardButton("✘ ᴅᴇᴠᴇʟᴏᴘᴇʀ", url="https://t.me/JonSnow11"),
+            ],
+            [
+                InlineKeyboardButton("✘ ꜱᴜᴘᴘᴏʀᴛ", url="https://t.me/RolexMoviesOX"),
+            ],
+            ]     
+        )
+    )
+    API_INFO[message.chat.id] = {"API_API":"b6aace46d40c605fff8e0cafbcd8fbe416851f4d", "API_WEB":"https://tnlink.in/api"} 
+    
+@Client.on_message(filters.command('shortener') & filters.user(ADMINS))
+async def shortener(_, message):
+    SHORTENER_TEXT = f"""
+**Send Your Shortener  Details :**
+➲ **Example**
+  ‣ /web <Your Shortener Website> : tnlink.in
+  ‣ /api <Your Api Token> : b6aace46d40c605fff8e0cafbcd8fbe416851f4d
+"""
+    await message.reply_text(SHORTENER_TEXT)
+    
+
+
+@Client.on_message(filters.command('web') & filters.user(ADMINS))
+async def web(_, message):
+  Web = message.text.split(" ")
+  if len(Web) == 1:
+    await message.reply_text("» 𝗨𝘀𝗮𝗴𝗲: /web <Shortener Website>")
+    return
+  global API_INFO
+  API_INFO[message.chat.id]["API_WEB"] = Web[1]
+  await message.reply_text("» ʏᴏᴜʀ sʜᴏʀᴛᴇɴᴇʀ ᴡᴇʙsɪᴛᴇ ʜᴀs ʙᴇᴇɴ sᴇᴛᴇᴅ.")
+  
+  
+@Client.on_message(filters.command('api') & filters.user(ADMINS))
+async def api(_, message):
+  Api = message.text.split(" ")
+  if len(Api) == 1:
+    await message.reply_text("» 𝗨𝘀𝗮𝗴𝗲: /api <Shortener API>")
+    return
+  global API_INFO
+  API_INFO[message.chat.id]["API_API"] = Api[1]
+  await message.reply_text("» ʏᴏᴜʀ sʜᴏʀᴛᴇɴᴇʀ ᴀᴘɪ ʜᴀs ʙᴇᴇɴ sᴇᴛᴇᴅ.")
 
 
 def humanbytes(size):
