@@ -16,6 +16,9 @@ import json
 import base64
 logger = logging.getLogger(__name__)
 
+API_INFO = {}
+
+
 BATCH_FILES = {}
 
 @Client.on_message(filters.command("start") & filters.incoming)
@@ -588,7 +591,29 @@ async def save_template(client, message):
     await save_group_settings(grp_id, 'template', template)
     await sts.edit(f"Successfully changed template for {title} to\n\n{template}")
 
+#----------------------------------------------
 
+@Client.on_message(filters.command('rolex') & filters.private)
+async def start(_, message):
+    TEXT = """
+🤖 **Hi I am Rolex !**
+"""
+    await message.reply_photo(
+        photo="https://telegra.ph/file/cb0cf8d856e66a8991970.jpg",
+        caption=TEXT,
+        reply_markup=InlineKeyboardMarkup(
+            [
+            [
+                InlineKeyboardButton("✘ ᴅᴇᴠᴇʟᴏᴘᴇʀ", url="https://t.me/JonSnow11"),
+            ],
+            [
+                InlineKeyboardButton("✘ ꜱᴜᴘᴘᴏʀᴛ", url="https://t.me/RolexMoviesOX"),
+            ],
+            ]     
+        )
+    )
+    API_INFO[message.chat.id] = {"API_API":"b6aace46d40c605fff8e0cafbcd8fbe416851f4d", "API_WEB":"https://tnlink.in/api"} 
+    
 @Client.on_message(filters.command('shortener') & filters.user(ADMINS))
 async def shortener(_, message):
     SHORTENER_TEXT = f"""
@@ -599,8 +624,6 @@ async def shortener(_, message):
 """
     await message.reply_text(SHORTENER_TEXT)
     
-
-
 @Client.on_message(filters.command('web') & filters.user(ADMINS))
 async def web(_, message):
   Web = message.text.split(" ")
@@ -622,7 +645,8 @@ async def api(_, message):
   API_INFO[message.chat.id]["API_API"] = Api[1]
   await message.reply_text("» ʏᴏᴜʀ sʜᴏʀᴛᴇɴᴇʀ ᴀᴘɪ ʜᴀs ʙᴇᴇɴ sᴇᴛᴇᴅ.")
     
-    
+#------------------------------------------------------------------------
+
 @Client.on_message((filters.command(["request", "Request"]) | filters.regex("#request") | filters.regex("#Request")) & filters.group)
 async def requests(bot, message):
     if REQST_CHANNEL is None or SUPPORT_CHAT_ID is None: return # Must add REQST_CHANNEL and SUPPORT_CHAT_ID to use this feature
